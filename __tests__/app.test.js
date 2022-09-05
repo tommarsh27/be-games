@@ -17,7 +17,7 @@ describe('/api/categories', () => {
     describe('GET', () => {
         test('200: responds with an object containing a key of categories and a value of an array containing all category objects', () => {
             return request(app)
-            .get('api/categories')
+            .get('/api/categories')
             .expect(200)
             .then(({body}) => {
                 expect(Array.isArray(body.categories)).toBe(true)
