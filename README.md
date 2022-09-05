@@ -8,8 +8,11 @@ one called .env.development and the other called .env.test
 .env.development should contain one line - PGDATABASE=nc_games
 .env.test should contain - PGDATABASE=nc_games_test
 
-These are the environment variables for the development and test databases
+These are the environment variables for the development and test databases.
+
 Without them the connection.js file will not be able to connect to either database.
+
+2 - 
 
 
 
