@@ -3,7 +3,6 @@ const testData = require('../db/data/test-data/index');
 const db = require('../db/connection');
 const app = require('../app');
 const request = require('supertest');
-const { response } = require('../app');
 
 beforeEach(() => {
     return seed(testData)
@@ -21,12 +20,20 @@ describe('/api/categories', () => {
             .expect(200)
             .then(({body}) => {
                 expect(Array.isArray(body.categories)).toBe(true)
-                expect(body.categories.length > 0)
+                expect(body.categories.length = 4)
                 body.categories.forEach((category) => {
                     expect(category).toHaveProperty('slug', expect.any(String))
                     expect(category).toHaveProperty('description', expect.any(String))
                 })
             })
+        })
+    })
+})
+
+describe('/api/reviews', () => {
+    describe('GET by review_id', () => {
+        test('200: responds with an object containing a key of reviews and a value of an array containing the review with the provided review_id', () =>{
+
         })
     })
 })
