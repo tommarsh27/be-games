@@ -56,7 +56,7 @@ describe('/api/reviews', () => {
             .get('/api/reviews/a')
             .expect(400)
             .then(({body}) => {
-                expext(body.msg).toBe('Invalid input')
+                expect(body.msg).toBe('Bad Request')
             })
         })
     })
