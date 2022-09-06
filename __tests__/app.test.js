@@ -59,5 +59,13 @@ describe('/api/reviews', () => {
                 expect(body.msg).toBe('Bad Request')
             })
         })
+        test('400: responds with error message when passed a review_id that is valid but does not appear in database', () => {
+            return request(app)
+            .get('/api/reviews/99')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
     })
 })
