@@ -1,13 +1,13 @@
 const express = require('express')
 const { getCategories } = require('./controllers/categories_controller')
-const { getReveiws } = require('./controllers/reviews_controller')
+const { getReviews } = require('./controllers/reviews_controller')
 
 
 const app = express()
 
 app.get('/api/categories', getCategories)
 
-app.get('/api/reviews/:review_id', getReveiws)
+app.get('/api/reviews/:review_id', getReviews)
 
 app.use((err, req, res, next) => {
     if(err.status && err.message) {
@@ -20,6 +20,8 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
     if(err.code === '22P02') {
         res.status(400).send({msg: 'Bad Request'})
+    } else {
+        next(err)
     }
 })
 

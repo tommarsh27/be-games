@@ -9,8 +9,8 @@ exports.selectReviews = (review_id) => {
                 message: 'Not Found'
             })
         } else {
-        rows.forEach(row => row.created_at = row.created_at.toString())
-        return rows
+        rows[0].created_at = rows[0].created_at.toString()
+        return rows[0]
         }
     })
 }

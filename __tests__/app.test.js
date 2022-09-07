@@ -20,7 +20,7 @@ describe('/api/categories', () => {
             .expect(200)
             .then(({body}) => {
                 expect(Array.isArray(body.categories)).toBe(true)
-                expect(body.categories.length = 4)
+                expect(body.categories.length).toBe(4)
                 body.categories.forEach((category) => {
                     expect(category).toHaveProperty('slug', expect.any(String))
                     expect(category).toHaveProperty('description', expect.any(String))
@@ -37,7 +37,7 @@ describe('/api/reviews', () => {
             .get('/api/reviews/1')
             .expect(200)
             .then(({body}) => {
-                expect(body.reviews).toEqual([{
+                expect(body.review).toEqual({
                     review_id: 1,
                     title: 'Agricola',
                     designer: 'Uwe Rosenberg',
@@ -48,7 +48,7 @@ describe('/api/reviews', () => {
                     category: 'euro game',
                     created_at: `${new Date(1610964020514)}`,
                     votes: 1
-                }])
+                })
             })
         })
         test('400: responds with error message when passed a review_id that is not a number', () => {
