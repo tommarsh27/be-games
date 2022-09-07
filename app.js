@@ -1,6 +1,7 @@
 const express = require('express')
 const { getCategories } = require('./controllers/categories_controller')
 const { getReviews } = require('./controllers/reviews_controller')
+const { getUsers } = require('./controllers/users_controller')
 
 
 const app = express()
@@ -8,6 +9,8 @@ const app = express()
 app.get('/api/categories', getCategories)
 
 app.get('/api/reviews/:review_id', getReviews)
+
+app.get('/api/users', getUsers)
 
 app.use((err, req, res, next) => {
     if(err.status && err.message) {

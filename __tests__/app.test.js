@@ -29,14 +29,12 @@ describe('/api/categories', () => {
         })
     })
 })
-<<<<<<< HEAD
-=======
 
-describe('/api/reviews', () => {
-    describe('GET by review_id', () => {
-        test('200: responds with an object containing a key of reviews and a value of an array containing the review with the provided review_id', () =>{
+describe('/api/review/:review_id', () => {
+    describe('GET', () => {
+        test('200: responds with an object containing a key of review and the review with the provided review_id', () => {
             return request(app)
-            .get('/api/reviews/1')
+            .get('/api/review/1')
             .expect(200)
             .then(({body}) => {
                 expect(body.review).toEqual({
@@ -72,4 +70,22 @@ describe('/api/reviews', () => {
     })
 })
 
->>>>>>> fc818d98a1418f9fb4bc3fa330a67b8ec47a9e25
+describe('/api/users', () => {
+    describe('GET', () => {
+        test('200: responds with an object containing a key of users and a value of an array containing all user objects', () => {
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({body}) => {
+                expect(Array.isArray(body.users)).toBe(true)
+                expect(body.users.length = 4)
+                body.users.forEach((user) => {
+                    expect(user).toHaveProperty('username', expect.any(String))
+                    expect(user).toHaveProperty('name', expect.any(String))
+                    expect(user).toHaveProperty('avatar_url', expect.any(String))
+                })
+            })
+        })
+    })
+})
+
