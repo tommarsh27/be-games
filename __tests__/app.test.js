@@ -30,11 +30,11 @@ describe('/api/categories', () => {
     })
 })
 
-describe('/api/review/:review_id', () => {
+describe('/api/reviews/:review_id', () => {
     describe('GET', () => {
         test('200: responds with an object containing a key of review and the review with the provided review_id', () => {
             return request(app)
-            .get('/api/review/1')
+            .get('/api/reviews/1')
             .expect(200)
             .then(({body}) => {
                 expect(body.review).toEqual({
@@ -65,6 +65,27 @@ describe('/api/review/:review_id', () => {
             .expect(404)
             .then(({body}) => {
                 expect(body.msg).toBe('Not Found')
+            })
+        })
+    })
+    describe('PATCH', () => {
+        test('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
+            return request(app)
+            .patch('/api/reviews/1')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.review).toEqual({
+                    review_id: 1,
+                    title: 'Agricola',
+                    designer: 'Uwe Rosenberg',
+                    owner: 'mallionaire',
+                    review_img_url:
+                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Farmyard fun!',
+                    category: 'euro game',
+                    created_at: `${new Date(1610964020514)}`,
+                    votes: 2
+                })
             })
         })
     })
