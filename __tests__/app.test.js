@@ -69,9 +69,11 @@ describe('/api/reviews/:review_id', () => {
         })
     })
     describe('PATCH', () => {
-        test('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
+        test.only('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
+            const newVotes = { inc_votes: 2 }
             return request(app)
             .patch('/api/reviews/1')
+            .send(newVotes)
             .expect(200)
             .then(({body}) => {
                 expect(body.review).toEqual({
@@ -84,8 +86,38 @@ describe('/api/reviews/:review_id', () => {
                     review_body: 'Farmyard fun!',
                     category: 'euro game',
                     created_at: `${new Date(1610964020514)}`,
-                    votes: 2
+                    votes: 3
                 })
+            })
+        })
+        test('400: responds with error message when passed a review_id that is not a number', () => {
+            const newVotes = { inc_votes: 1 }
+            return request(app)
+            .patch('/api/reviews/a')
+            .send(newVotes)
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
+        test('400: responds with error message when passed a review_id that is valid but does not appear in database', () => {
+            const newVotes = { inc_votes: 1 }
+            return request(app)
+            .get('/api/reviews/99')
+            .send(newVotes)
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('Not Found')
+            })
+        })
+        test('400: responds with error message when passed an empty request body', () => {
+            const newVotes = {}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(newVotes)
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
             })
         })
     })
