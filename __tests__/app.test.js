@@ -29,3 +29,47 @@ describe('/api/categories', () => {
         })
     })
 })
+<<<<<<< HEAD
+=======
+
+describe('/api/reviews', () => {
+    describe('GET by review_id', () => {
+        test('200: responds with an object containing a key of reviews and a value of an array containing the review with the provided review_id', () =>{
+            return request(app)
+            .get('/api/reviews/1')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.review).toEqual({
+                    review_id: 1,
+                    title: 'Agricola',
+                    designer: 'Uwe Rosenberg',
+                    owner: 'mallionaire',
+                    review_img_url:
+                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Farmyard fun!',
+                    category: 'euro game',
+                    created_at: `${new Date(1610964020514)}`,
+                    votes: 1
+                })
+            })
+        })
+        test('400: responds with error message when passed a review_id that is not a number', () => {
+            return request(app)
+            .get('/api/reviews/a')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
+        test('400: responds with error message when passed a review_id that is valid but does not appear in database', () => {
+            return request(app)
+            .get('/api/reviews/99')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('Not Found')
+            })
+        })
+    })
+})
+
+>>>>>>> fc818d98a1418f9fb4bc3fa330a67b8ec47a9e25

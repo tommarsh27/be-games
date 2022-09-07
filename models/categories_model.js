@@ -6,3 +6,4 @@ exports.selectCategories = () => {
         return rows
     })
 }
+
