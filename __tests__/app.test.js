@@ -82,3 +82,23 @@ describe('/api/reviews', () => {
 =======
 })
 >>>>>>> b3f5319ee730a5d34cc6b23e86c45396a5307a8c
+
+
+describe('/api/users', () => {
+    describe('GET', () => {
+        test('200: responds with an object containing a key of categories and a value of an array containing all user objects', () => {
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({body}) => {
+                expect(Array.isArray(body.users)).toBe(true)
+                expect(body.users.length = 4)
+                body.categories.forEach((user) => {
+                    expect(user).toHaveProperty('username', expect.any(String))
+                    expect(user).toHaveProperty('name', expect.any(String))
+                    expect(user).toHaveProperty('avatar_url', expect.any(String))
+                })
+            })
+        })
+    })
+})
