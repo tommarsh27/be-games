@@ -3,6 +3,10 @@ const testData = require('../db/data/test-data/index');
 const db = require('../db/connection');
 const app = require('../app');
 const request = require('supertest');
+<<<<<<< HEAD
+=======
+const { response } = require('../app');
+>>>>>>> b3f5319ee730a5d34cc6b23e86c45396a5307a8c
 
 beforeEach(() => {
     return seed(testData)
@@ -20,7 +24,11 @@ describe('/api/categories', () => {
             .expect(200)
             .then(({body}) => {
                 expect(Array.isArray(body.categories)).toBe(true)
+<<<<<<< HEAD
                 expect(body.categories.length = 4)
+=======
+                expect(body.categories.length > 0)
+>>>>>>> b3f5319ee730a5d34cc6b23e86c45396a5307a8c
                 body.categories.forEach((category) => {
                     expect(category).toHaveProperty('slug', expect.any(String))
                     expect(category).toHaveProperty('description', expect.any(String))
@@ -28,6 +36,7 @@ describe('/api/categories', () => {
             })
         })
     })
+<<<<<<< HEAD
 })
 
 describe('/api/reviews', () => {
@@ -70,3 +79,6 @@ describe('/api/reviews', () => {
     })
 })
 
+=======
+})
+>>>>>>> b3f5319ee730a5d34cc6b23e86c45396a5307a8c
