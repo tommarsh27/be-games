@@ -6,6 +6,10 @@ const app = express()
 
 app.use(express.json())
 
+app.get('/', (req, res) => {
+    res.status(200).send({msg: 'working!'})
+})
+
 app.use('/api', apiRouter)
 
 app.use((err, req, res, next) => {

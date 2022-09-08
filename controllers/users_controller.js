@@ -1,4 +1,3 @@
-const {request} = require('../app')
 const { selectUsers } = require('../models/users_model')
 
 exports.getUsers = (req, res, next) => {

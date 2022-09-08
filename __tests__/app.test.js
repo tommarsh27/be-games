@@ -67,25 +67,6 @@ describe('/api/reviews/:review_id', () => {
                 expect(body.msg).toBe('Not Found')
             })
         })
-        test('200: responds with with an object containing a key of review and the requested review that has a comment_count', () => {
-            return request(app)
-            .get('/api/reviews/2')
-            .expect(200)
-            .then(({body}) => {
-                expect(body.review).toEqual({
-                    title: 'Jenga',
-                    designer: 'Leslie Scott',
-                    owner: 'philippaclaire9',
-                    review_img_url:
-                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
-                    review_body: 'Fiddly fun for all the family',
-                    category: 'dexterity',
-                    created_at: new Date(1610964101251),
-                    votes: 5,
-                    comment_count: 3
-                    })
-            })
-        })
     })
     describe('PATCH', () => {
         test('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
