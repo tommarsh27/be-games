@@ -1,6 +1,9 @@
 const db = require('../db/connection')
 
 exports.selectReview = (review_id) => {
+    return db.query('SELECT * FROM comments WHERE review_id = $1', [review_id])
+    .then
+
     return db.query(`SELECT * FROM reviews WHERE review_id = $1`, [review_id])
     .then(({rows})=>{
         if(rows.length === 0) {
