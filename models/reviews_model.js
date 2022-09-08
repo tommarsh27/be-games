@@ -23,11 +23,9 @@ exports.updateReview = (row, inc_votes) => {
         })
     } else {
         const newVotes = row.votes + inc_votes
-        console.log(newVotes, 'nvs', row.review_id, 'revid')
         return db.query(`UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;`, [newVotes, row.review_id])
         .then(({rows})=>{
             rows[0].created_at = rows[0].created_at.toString()
-            console.log(rows, '< rows')
             return rows[0]
         })
     }
