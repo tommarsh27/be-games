@@ -68,7 +68,7 @@ describe('/api/reviews/:review_id', () => {
                 expect(body.msg).toBe('Not Found')
             })
         })
-        test('200: responds with an object containing a key of review and the review with the provided review_id', () => {
+        test('200: responds with an object containing a key of review and the requested review including a comment_count', () => {
             return request(app)
             .get('/api/reviews/2')
             .expect(200)
