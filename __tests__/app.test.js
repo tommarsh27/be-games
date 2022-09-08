@@ -47,7 +47,8 @@ describe('/api/reviews/:review_id', () => {
                     review_body: 'Farmyard fun!',
                     category: 'euro game',
                     created_at: `${new Date(1610964020514)}`,
-                    votes: 1
+                    votes: 1,
+                    comment_count: 0
                 })
             })
         })
@@ -67,7 +68,28 @@ describe('/api/reviews/:review_id', () => {
                 expect(body.msg).toBe('Not Found')
             })
         })
+        test('200: responds with an object containing a key of review and the review with the provided review_id', () => {
+            return request(app)
+            .get('/api/reviews/2')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.review).toEqual({
+                        review_id: 2,
+                        title: 'Jenga',
+                        designer: 'Leslie Scott',
+                        owner: 'philippaclaire9',
+                        review_img_url:
+                          'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                        review_body: 'Fiddly fun for all the family',
+                        category: 'dexterity',
+                        created_at: `${new Date(1610964101251)}`,
+                        votes: 5,
+                        comment_count: 3
+                })
+            })
+        })
     })
+
     describe('PATCH', () => {
         test('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
             const newVotes = { inc_votes: 2 }
