@@ -6,11 +6,15 @@ const app = express()
 
 app.use(express.json())
 
+app.use('/api', apiRouter)
+
 app.get('/', (req, res) => {
-    res.status(200).send({msg: 'working!'})
+    res.status(200).send({msg: 'app online'})
 })
 
-app.use('/api', apiRouter)
+app.all('/*', (req, res, next) => {
+    res.status(404).send({msg: 'Path Not Found'})
+})
 
 app.use((err, req, res, next) => {
     if(err.status && err.message) {

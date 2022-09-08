@@ -12,6 +12,17 @@ afterAll(() => {
    return db.end()
 })
 
+describe('/', () => {
+    test('should send 404 when path is not found', () => {
+        return request(app)
+        .get('/notAnEndpoint')
+        .expect(404)
+        .then(({body}) => {
+            expect(body.msg).toBe('Path Not Found')
+        })
+    })
+})
+
 describe('/api/categories', () => {
     describe('GET', () => {
         test('200: responds with an object containing a key of categories and a value of an array containing all category objects', () => {
