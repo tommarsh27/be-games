@@ -30,6 +30,30 @@ describe('/api/categories', () => {
     })
 })
 
+describe('/api/reviews', () => {
+    describe('GET', () => {
+        test('200: responds with an object containing a key of reviews and a value of an array containing review objects', () => {
+            return request(app)
+            .get('/api/reviews')
+            .expect(200)
+            .then(({body}) => {
+                expect(Array.isArray(body.reviews)).toBe(true)
+                expect(body.reviews.length).toBe(13)
+                body.reviews.forEach((review) => {
+                    expect(review).toHaveProperty('title', expect.any(String))
+                    expect(review).toHaveProperty('designer', expect.any(String))
+                    expect(review).toHaveProperty('owner', expect.any(String))
+                    expect(review).toHaveProperty('review_img_url', expect.any(String))
+                    expect(review).toHaveProperty('review_body', expect.any(String))
+                    expect(review).toHaveProperty('category', expect.any(String))
+                    expect(review).toHaveProperty('created_at', expect.any(String))
+                    expect(review).toHaveProperty('votes', expect.any(Number))
+                })
+            })
+        })
+    })
+})
+
 describe('/api/reviews/:review_id', () => {
     describe('GET', () => {
         test('200: responds with an object containing a key of review and the review with the provided review_id', () => {
