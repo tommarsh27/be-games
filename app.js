@@ -1,19 +1,12 @@
 const express = require('express')
-const { getCategories } = require('./controllers/categories_controller')
-const { getReview, patchReview } = require('./controllers/reviews_controller')
-const { getUsers } = require('./controllers/users_controller')
+const apiRouter = require('./routers/api.router')
 
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/api/categories', getCategories)
-
-app.get('/api/reviews/:review_id', getReview)
-app.patch('/api/reviews/:review_id', patchReview)
-
-app.get('/api/users', getUsers)
+app.use('/api', apiRouter)
 
 app.use((err, req, res, next) => {
     if(err.status && err.message) {

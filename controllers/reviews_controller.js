@@ -17,9 +17,9 @@ exports.patchReview = (req, res, next) => {
     .then((row) => {
         return updateReview(row, inc_votes)
     })
-    .then((newRow)=>{
-        console.log(newRow)
-        res.status(200).send({newRow})
+    .then((review)=>{
+        console.log(review, '< newRow')
+        res.status(200).send({review})
     })
     .catch(next)
 }

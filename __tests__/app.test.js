@@ -69,7 +69,7 @@ describe('/api/reviews/:review_id', () => {
         })
     })
     describe('PATCH', () => {
-        test.only('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
+        test('200: updates the votes property of the review with the provided review_id by the amount provided, then responds with the updated review', () => {
             const newVotes = { inc_votes: 2 }
             return request(app)
             .patch('/api/reviews/1')
@@ -112,6 +112,16 @@ describe('/api/reviews/:review_id', () => {
         })
         test('400: responds with error message when passed an empty request body', () => {
             const newVotes = {}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(newVotes)
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
+        test('400: responds with error message when passed a request with an invalid parameter', () => {
+            const newVotes = {inc_votes: 'yes'}
             return request(app)
             .patch('/api/reviews/1')
             .send(newVotes)

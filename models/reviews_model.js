@@ -27,8 +27,8 @@ exports.updateReview = (row, inc_votes) => {
         return db.query(`UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;`, [newVotes, row.review_id])
         .then(({rows})=>{
             rows[0].created_at = rows[0].created_at.toString()
-            console.log(rows)
-            return row[0]
+            console.log(rows, '< rows')
+            return rows[0]
         })
     }
 }
