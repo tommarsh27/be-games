@@ -1,9 +1,31 @@
 const db = require('../db/connection')
 
-exports.showReviews = () => {
-    return db.query(`SELECT * FROM reviews`)
+exports.showReviews = (category) => {
+    const validCategs = ['strategy', 'hidden-roles', 'dexterity', 'push-your-luck', 'roll-and-write', 'deck-building', 'engine-building']
+    if(category && !validCategs.includes(category)) {
+        return Promise.reject({
+            status:400,
+            message: 'Bad Request'
+        })
+    }
+    let queryStr = `SELECT * FROM reviews `
+    const queryVals = []
+    if(category) {
+        queryStr += ` WHERE category=$1`
+        queryVals.push(category)
+    }
+    queryStr += ` ORDER BY created_at DESC`
+    return db.query(queryStr, queryVals)
     .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({
+                status: 404,
+                message: 'Not Found'
+            })
+        } else {
+        rows[0].created_at = rows[0].created_at.toString()
         return rows
+        }
     })
 }
 

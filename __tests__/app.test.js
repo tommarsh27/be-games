@@ -43,7 +43,7 @@ describe('/api/categories', () => {
 
 describe('/api/reviews', () => {
     describe('GET', () => {
-        test('200: responds with an object containing a key of reviews and a value of an array containing review objects', () => {
+        test('200: responds with an object containing a key of reviews and a value of an array containing review objects sorted by date in descending order', () => {
             return request(app)
             .get('/api/reviews')
             .expect(200)
@@ -60,6 +60,46 @@ describe('/api/reviews', () => {
                     expect(review).toHaveProperty('created_at', expect.any(String))
                     expect(review).toHaveProperty('votes', expect.any(Number))
                 })
+                const reviewCount = body.reviews.length
+                if (reviewCount > 1) {
+                    expect(Date.parse(body.reviews[0].created_at)).toBeGreaterThan(Date.parse(body.reviews[1].created_at))
+                    expect(Date.parse(body.reviews[reviewCount - 2].created_at)).toBeGreaterThan(Date.parse(body.reviews[reviewCount - 1].created_at)) 
+                }    
+            })
+        })
+        test('200: responds with an object containing a key of reviews and a value of an array containing the reviews of the provided category query sorted by date in descending order', () => {
+            return request(app)
+            .get('/api/reviews?category=dexterity')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.reviews).toEqual([{
+                    review_id: 2,
+                    title: 'Jenga',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_img_url:
+                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Fiddly fun for all the family',
+                    category: 'dexterity',
+                    created_at: `${new Date(1610964101251)}`,
+                    votes: 5
+                  }])
+            })
+        })
+        test('400: responds with an error message when passed a category that is not a valid category', () => {
+            return request(app)
+            .get('/api/reviews?category=7')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
+        test('404: responds with an error message when passed a category that does not return any reviews', () => {
+            return request(app)
+            .get('/api/reviews?category=strategy')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('Not Found')
             })
         })
     })
