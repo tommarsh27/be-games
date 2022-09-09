@@ -176,18 +176,26 @@ describe('/api/reviews/:review_id/comments', () => {
         })
         test('400: responds with error message when passed a review_id that is not a number', () => {
             return request(app)
-            .get('/api/reviews/a')
+            .get('/api/reviews/a/comments')
             .expect(400)
             .then(({body}) => {
                 expect(body.msg).toBe('Bad Request')
             })
         })
-        test('400: responds with error message when passed a review_id that is valid but does not appear in any of the comments', () => {
+        test('404: responds with error message when passed a review_id that is valid but does not appear in any of the comments', () => {
             return request(app)
-            .get('/api/reviews/99')
+            .get('/api/reviews/99/comments')
             .expect(404)
             .then(({body}) => {
                 expect(body.msg).toBe('Not Found')
+            })
+        })
+        test('200: responds with an empty array when passed a review_id that is present in database but has no comments associated with it', () => {
+            return request(app)
+            .get('/api/reviews/1/comments')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.comments).toEqual([])
             })
         })
     })
