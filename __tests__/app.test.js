@@ -74,17 +74,17 @@ describe('/api/reviews/:review_id', () => {
             .expect(200)
             .then(({body}) => {
                 expect(body.review).toEqual({
-                        review_id: 2,
-                        title: 'Jenga',
-                        designer: 'Leslie Scott',
-                        owner: 'philippaclaire9',
-                        review_img_url:
-                          'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
-                        review_body: 'Fiddly fun for all the family',
-                        category: 'dexterity',
-                        created_at: `${new Date(1610964101251)}`,
-                        votes: 5,
-                        comment_count: 3
+                    review_id: 2,
+                    title: 'Jenga',
+                    designer: 'Leslie Scott',
+                    owner: 'philippaclaire9',
+                    review_img_url:
+                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Fiddly fun for all the family',
+                    category: 'dexterity',
+                    created_at: `${new Date(1610964101251)}`,
+                    votes: 5,
+                    comment_count: 3
                 })
             })
         })
@@ -153,6 +153,45 @@ describe('/api/reviews/:review_id', () => {
             })
         })
     })
+})
+
+describe('/api/reviews/:review_id/comments', () => {
+    describe('GET', () => {
+        test('200: Responds with an object containing a key of comments and a value of an array of comments for the given review_id of which each comment', () => {
+            return request(app)
+            .get('/api/reviews/2/comments')
+            .expect(200)
+            .then(({body}) => {
+                expect(Array.isArray(body.comments)).toBe(true)
+                expect(body.comments.length).toBe(3)
+                body.comments.forEach((comment) => {
+                    expect(comment).toHaveProperty('comment_id', expect.any(Number))
+                    expect(comment).toHaveProperty('votes', expect.any(Number))
+                    expect(comment).toHaveProperty('created_at', expect.any(String))
+                    expect(comment).toHaveProperty('author', expect.any(String))
+                    expect(comment).toHaveProperty('body', expect.any(String))
+                    expect(comment).toHaveProperty('review_id', expect.any(Number))
+                })
+            })
+        })
+        test('400: responds with error message when passed a review_id that is not a number', () => {
+            return request(app)
+            .get('/api/reviews/a')
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
+            })
+        })
+        test('400: responds with error message when passed a review_id that is valid but does not appear in any of the comments', () => {
+            return request(app)
+            .get('/api/reviews/99')
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('Not Found')
+            })
+        })
+    })
+
 })
 
 describe('/api/users', () => {

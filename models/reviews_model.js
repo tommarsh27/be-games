@@ -16,6 +16,20 @@ exports.selectReview = (review_id) => {
     })
 }
 
+exports.selectComments = (review_id) => {
+    return db.query('SELECT * FROM comments WHERE review_id = $1', [review_id])
+    .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({
+                status: 404,
+                message: 'Not Found'
+            })
+        } else {
+        return rows
+        }
+    })
+}
+
 exports.updateReview = (row, inc_votes) => {
     if(isNaN(inc_votes)) {
         return Promise.reject({
