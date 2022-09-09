@@ -94,12 +94,20 @@ describe('/api/reviews', () => {
                 expect(body.msg).toBe('Bad Request')
             })
         })
-        test('404: responds with an error message when passed a category that does not return any reviews', () => {
+        test('404: responds with an error message when passed a category that does not exist in the database', () => {
             return request(app)
-            .get('/api/reviews?category=strategy')
+            .get('/api/reviews?category=schmategy')
             .expect(404)
             .then(({body}) => {
                 expect(body.msg).toBe('Not Found')
+            })
+        })
+        test('200: responds with an empty array if the category exists but there are no reviews with that category in the database', () => {
+            return request(app)
+            .get('/api/reviews?category=strategy')
+            .expect(200)
+            .then(({body}) => {
+                expect(body).toEqual({})
             })
         })
     })
