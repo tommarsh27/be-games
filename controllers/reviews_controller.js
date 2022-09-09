@@ -1,6 +1,7 @@
 const { updateReview, showReviews, selectReview } = require('../models/reviews_model')
 
 exports.getReviews = (req, res, next) => {
+    console.log(req.query)
     const {category} = req.query
     showReviews(category).then((reviews) => {
         res.status(200).send({reviews})

@@ -104,10 +104,10 @@ describe('/api/reviews', () => {
         })
         test('200: responds with an empty array if the category exists but there are no reviews with that category in the database', () => {
             return request(app)
-            .get('/api/reviews?category=strategy')
+            .get("/api/reviews?category=children's games")
             .expect(200)
             .then(({body}) => {
-                expect(body).toEqual({})
+                expect(body.reviews).toEqual([])
             })
         })
     })
