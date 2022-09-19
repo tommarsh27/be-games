@@ -10,6 +10,7 @@ apiRouter.get('/categories', getCategories)
 apiRouter.get('/reviews', getReviews)
 apiRouter.get('/reviews/:review_id', getReviewById)
 apiRouter.get('/reviews/:review_id/comments', getCommentsByReview)
+apiRouter.post('/reviews/:review_id/comments', postComment)
 apiRouter.patch('/reviews/:review_id', patchReview)
 
 apiRouter.get('/users', getUsers)
