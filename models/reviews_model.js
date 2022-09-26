@@ -61,6 +61,17 @@ exports.selectComments = async (review_id) => {
     });
 };
 
+exports.addComment = (newComment) => {
+    const {username, comment, review_id} = newComment;
+    const created_at = new Date
+    console.log(newComment, '< comm in mod')
+    return db.query('INSERT INTO comments (author, body, review_id, created_at) VALUES ($1, $2, $3, $4) RETURNING *;', [username, comment, review_id, created_at])
+    .then(({rows}) => {
+        console.log(rows[0], '< rows')
+        return rows[0]
+    })
+}
+
 exports.updateReview = (row, inc_votes) => {
   if (isNaN(inc_votes)) {
     return Promise.reject({

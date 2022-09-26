@@ -282,7 +282,24 @@ describe('/api/reviews/:review_id/comments', () => {
             })
         })
     })
-
+    describe.only('POST', () => {
+        test('201: posts a new comment with the provided author and body and returns the posted comment', () => {
+            const testComment = {
+                username: 'mallionaire',
+                comment: 'testComment'
+            }
+            return request(app)
+            .post('/api/reviews/1/comments')
+            .send(testComment)
+            .expect(201)
+            .then(({body}) => {
+                expect(body.comment.author).toEqual(testComment.username)
+                expect(body.comment.body).toEqual(testComment.comment)
+                expect(body.comment.review_id).toBe(1)
+                expect(body.comment).toHaveProperty('created_at', expect.any(String))
+            })
+        })
+    })
 })
 
 describe('/api/users', () => {
