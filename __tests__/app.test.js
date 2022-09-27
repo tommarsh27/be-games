@@ -282,7 +282,7 @@ describe('/api/reviews/:review_id/comments', () => {
             })
         })
     })
-    describe.only('POST', () => {
+    describe('POST', () => {
         test('201: posts a new comment with the provided author and body and returns the posted comment', () => {
             const testComment = {
                 username: 'mallionaire',
