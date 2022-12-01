@@ -43,7 +43,7 @@ describe('/api/categories', () => {
 
 describe('/api/reviews', () => {
     describe('GET', () => {
-        test('200: responds with an object containing a key of reviews and a value of an array containing review objects sorted by date in descending order', () => {
+        test.only('200: responds with an object containing a key of reviews and a value of an array containing review objects sorted by date in descending order', () => {
             return request(app)
             .get('/api/reviews')
             .expect(200)
@@ -108,6 +108,24 @@ describe('/api/reviews', () => {
             .expect(200)
             .then(({body}) => {
                 expect(body.reviews).toEqual([])
+            })
+        })
+        test('200: responds with an array containing reviews sorted by the provided column, in the provided order', () => {
+            return request(app)
+            .get("/api/reviews?sort_by=review_id&order=asc")
+            .expect(200)
+            .then(({body}) => {
+                expect(body.reviews[0]).toEqual([{
+                    title: 'Agricola',
+                    designer: 'Uwe Rosenberg',
+                    owner: 'mallionaire',
+                    review_img_url:
+                      'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                    review_body: 'Farmyard fun!',
+                    category: 'euro game',
+                    created_at: new Date(1610964020514),
+                    votes: 1
+                  }])
             })
         })
     })
@@ -297,6 +315,29 @@ describe('/api/reviews/:review_id/comments', () => {
                 expect(body.comment.body).toEqual(testComment.comment)
                 expect(body.comment.review_id).toBe(1)
                 expect(body.comment).toHaveProperty('created_at', expect.any(String))
+            })
+        })
+        test('404: responds with an error when passed a review_id that is valid but not found in database', () => {
+            const testComment = {
+                username: 'mallionaire',
+                comment: 'testComment'
+            }
+            return request(app)
+            .post('/api/reviews/99/comments')
+            .send(testComment)
+            .expect(404)
+            .then(({body}) => {
+                expect(body.msg).toBe('Not Found')
+            })
+        })
+        test('400: responds with an error when an empty comment body is sent', () => {
+            const testComment = {}
+            return request(app)
+            .post('/api/reviews/1/comments')
+            .send(testComment)
+            .expect(400)
+            .then(({body}) => {
+                expect(body.msg).toBe('Bad Request')
             })
         })
     })

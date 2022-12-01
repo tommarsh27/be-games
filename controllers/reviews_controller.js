@@ -2,8 +2,8 @@ const { updateReview, showReviews, selectReview, selectComments, addComment } = 
 
 exports.getReviews = (req, res, next) => {
     console.log(req.query)
-    const {category} = req.query
-    showReviews(category).then((reviews) => {
+    const {category, sort_by, order} = req.query
+    showReviews(category, sort_by, order).then((reviews) => {
         res.status(200).send({reviews})
     })
     .catch(next)
@@ -31,13 +31,10 @@ exports.postComment = (req, res, next) => {
     const newComment = {
         username, comment, review_id
     }
-    // console.log(newComment, '< comm in cont')
     addComment(newComment).then((comment) => {
-        console.log(comment, '< comment')
         res.status(201).send({comment})
     })
     .catch(next)
-
 }
 
 exports.patchReview = (req, res, next) => {

@@ -1,10 +1,15 @@
 const db = require("../db/connection");
 
-exports.showReviews = async (category) => {
+exports.showReviews = async ({
+  sort_by = "created_at",
+  order = "desc",
+  category
+}) => {
   let queryStr = `SELECT * FROM reviews`;
   const queryVals = [];
+  let queryCount = 1;
   if (category) {
-    console.log(category, "categ modl");
+    // console.log(category, "categ modl");
     if (!isNaN(category)) {
       return Promise.reject({ status: 400, message: "Bad Request" });
     }
@@ -12,13 +17,15 @@ exports.showReviews = async (category) => {
       category,
     ]);
     if (dbOutput.rows.length === 0) {
-      console.log(dbOutput.rows, "dbOut");
+      // console.log(dbOutput.rows, "dbOut");
       return Promise.reject({ status: 404, message: "Not Found" });
     }
-    queryStr += ` WHERE category=$1`;
+    queryStr += ` WHERE category=$${queryCount}`;
+    queryCount++;
     queryVals.push(category);
   }
-  queryStr += ` ORDER BY created_at DESC`;
+  queryStr += ` ORDER BY $${queryCount} $${queryCount + 1}`;
+  queryVals.push(sort_by, order)
   return db.query(queryStr, queryVals).then(({ rows }) => {
     if (rows[0]) {
       rows[0].created_at = rows[0].created_at.toString();
@@ -62,15 +69,18 @@ exports.selectComments = async (review_id) => {
 };
 
 exports.addComment = (newComment) => {
-    const {username, comment, review_id} = newComment;
-    const created_at = new Date
-    console.log(newComment, '< comm in mod')
-    return db.query('INSERT INTO comments (author, body, review_id, created_at) VALUES ($1, $2, $3, $4) RETURNING *;', [username, comment, review_id, created_at])
-    .then(({rows}) => {
-        console.log(rows[0], '< rows')
-        return rows[0]
-    })
-}
+  const { username, comment, review_id } = newComment;
+  const created_at = new Date();
+  return db
+    .query(
+      "INSERT INTO comments (author, body, review_id, created_at) VALUES ($1, $2, $3, $4) RETURNING *;",
+      [username, comment, review_id, created_at]
+    )
+    .then(({ rows }) => {
+      console.log(rows[0], "< post output");
+      return rows[0];
+    });
+};
 
 exports.updateReview = (row, inc_votes) => {
   if (isNaN(inc_votes)) {
