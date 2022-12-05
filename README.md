@@ -1,6 +1,35 @@
-# Northcoders House of Games API
+# Board Game Reviews API
 
-1 - Set-up
+Welcome to Tom Marsh's Board Games API.
+
+# Hosted Project
+
+The hosted project can be found at https://games-tm.cyclic.app
+
+# The Project
+
+The project is an API which allows a user to interact with a database through their browser. The API accesses application data programmatically, with the intention of mimicking real-world back end services (i.e. Reddit) which provide information to front end architecture.
+
+The project interacts with a PSQL database using node-postgres.
+
+The database itself is populated with four tables. These contain information about board games, board game reviews, users who own those board games, and comments on the board game reviews. The four tables relate to each other in such a way that a request may be made which requests combined information from each table and returns aggregate data.
+
+The endpoints.json file details the various endpoints contained within the project. It contains examples of what a request made to each endpoint might return.
+
+The project aims to demonstrate my understanding of application programming interfaces and my ability to write and test code effectively. The project contains comprehensive error-handling in order to make the API as functional and user-friendly as possible.
+
+# Setting up the API
+
+If you would like to use this API, you can git clone it. To do this, navigate to https://github.com/tommarsh27/be-games. Once there, click the Code drop down button, and copy the displayed https link or click "Open with GitHub Desktop" if you are a desktop app user. If you have copied the link, navigate to your desired directory within your terminal, and enter 'git clone https://github.com/tommarsh27/be-games'. You should then be able to open the repo in VS Code or your code editing software of choice.
+
+Once open, run npm install to install project dependencies locally. This will install the following dependencies necessary for the repo to function:
+
+dotenv
+express
+jest-extended
+pg
+pg-format
+supertest
 
 To use the database in this repo you will need to create 2 dotenv files in the main directory - 
 one called .env.development and the other called .env.test
@@ -12,56 +41,10 @@ These are the environment variables for the development and test databases.
 
 Without them the connection.js file will not be able to connect to either database.
 
-2 - 
+Next you will need to seed your local database. This can be done by running the command 'npm run setup-dbs' and then 'npm run seed'. To run the test files, you can either run the command 'npm t' or choose to run specific test files by copying the relative path from the files in the tests folder and then running 'npm t <<file_name>>'.
 
+# Minimum Requirements
 
+The following versions of node.js and postgres are needed:
 
-
-
-
-
-
-
-
-
-
-ORIGINAL README BELOW
-
-Background
-We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimic the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
-
-Your database will be PSQL, and you will interact with it using node-postgres.
-
-Kanban
-Link to your Trello Board here: https://trello.com/b/gBtX4GN3/be-nc-games
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one ticket at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled. You can make use of the checklist on each ticket to keep track of the errors you want to handle. You can also make use of error-handling.md to consider the error codes we may wish to respond with.
-
-Please ensure you work through the tickets in numerical order.
-
-Git Branching and Pull Requests
-You will be working on each ticket on a new branch.
-
-To create and switch to a new git branch use the command:
-
-git checkout -b <new branch name>
-This will create a branch and move over to that branch. (Omit the -b flag if you wish to switch to an already existing branch).
-
-We recommend that you name the branch after the number assigned to each ticket via the header. eg. ncnews-1
-
-When pushing the branch to git hub ensure that you make reference to the branch you are pushing to on the remote.
-
-git push origin <branch name>
-From github you can make a pull request and share the link and ticket number via a pull request specific nchelp using the command nchelp pr. A tutor will swing by to review your code. Ensure that you keep your trello up to date whilst you await the PR approval. Regular nchelp will be available for when you need support.
-
-Once a pull request been accepted be sure to switch back to the main branch and pull down the updated changes.
-
-git checkout main
-
-git pull origin main
-You can tidy up your local branches once they have been pull into main by deleting them:
-
-git branch -D <local branch>
-Husky
-To ensure we are not commiting broken code this project makes use of git hooks. Git hooks are scripts triggered during certain events in the git lifecycle. Husky is a popular package which allows us to set up and maintain these scripts. This project makes use a pre-commit hook. When we attempt to commit our work, the script defined in the pre-commit file will run. If any of our tests fail than the commit will be aborted.
-
-The Husky documentation explains how to configure Husky for your own project as well as creating your own custom hooks._
+node: v16.16.0 postgres: v14.5
